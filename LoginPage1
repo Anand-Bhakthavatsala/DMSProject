@@ -1,0 +1,55 @@
+package pages;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.testng.annotations.Test;
+
+public class LoginPage1{
+		
+	@FindBy(id="UserName") public WebElement userName;
+	@FindBy(id="Password") public WebElement passWord;
+	@FindBy(xpath="//input[@value='Log in']") public WebElement loginButton;
+	@FindBy(xpath="//span[text()='Select Division']") public WebElement selectDivision;
+	//@FindBy(xpath="//div/a/span[contains(text(),'Select Division')]") public WebElement 
+	@FindBy(xpath="//li[contains(.,'HUBBALLI-DHARWAD CITY')]") public WebElement divisionName;
+	@FindBy(xpath="//input[@value='Log in']") public WebElement loginbtn;
+	
+	public WebDriver driver;
+	
+	
+	
+	public void dmsLogin() throws InterruptedException, EncryptedDocumentException, FileNotFoundException, IOException
+	{
+		
+		//Declaring the Excel path and to get the number of questions present in the excel
+		String path="./Data/Input.xlsx";
+		String sheet="sheet1";
+	//	Workbook wb = WorkbookFactory.create(new FileInputStream(path));
+		Workbook wb = WorkbookFactory.create(new FileInputStream(path));
+		int rc = wb.getSheet(sheet).getLastRowNum();
+		//System.out.println(rc);
+		String username =wb.getSheet(sheet).getRow(1).getCell(0).toString();
+		String password =wb.getSheet(sheet).getRow(1).getCell(1).toString();
+		
+		userName.sendKeys(username);
+		passWord.sendKeys(password);
+		// Click on Select Division
+		
+		//		WebElement divisionClick = driver.findElement(By.xpath("//div/a/span[contains(text(),'Select Division')]"));
+		//		divisionClick.click();
+		selectDivision.click();
+		Thread.sleep(2000);
+		divisionName.click();
+		Thread.sleep(3000);
+		loginbtn.click();				
+	}
+}
